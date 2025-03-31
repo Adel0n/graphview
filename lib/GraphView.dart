@@ -270,16 +270,22 @@ class _GraphViewAnimatedState extends State<_GraphViewAnimated> {
   late Timer timer;
   late Graph graph;
   late Algorithm algorithm;
+  bool _isAlgorithmInitialized = false; // Flag to track initialization
 
   @override
   void initState() {
-    graph = widget.graph;
-
-    algorithm = widget.algorithm;
-    algorithm.init(graph);
-    startTimer();
-
     super.initState();
+
+    graph = widget.graph;
+    algorithm = widget.algorithm;
+
+    // Initialize only once per state instance
+    if (!_isAlgorithmInitialized) {
+      algorithm.init(graph);
+      _isAlgorithmInitialized = true;
+    }
+
+    startTimer();
   }
 
   void startTimer() {
